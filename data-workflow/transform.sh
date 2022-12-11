@@ -3,7 +3,7 @@
 BASE_DIR=$(dirname "$0") #zorgen dat paden juist werken indien script niet vanuit data-workflow/ uitgevoerd wordt
 
 touch $BASE_DIR/out.csv #outputbestand aanmaken indien het nog niet bestaat
-echo "DATETIME;BNB;BTC;ETH;USDC;USDT" > $BASE_DIR/out.csv #hoofding van csv bestand maken
+echo "DATETIME,BNB,BTC,ETH,USDC,USDT" > $BASE_DIR/out.csv #hoofding van csv bestand maken
 
 for FILE in $BASE_DIR/data/*.json; #over paden van elke file onder data-workflow/data/ loopen
 do
@@ -15,9 +15,9 @@ do
     map_values(. |= sub("^.* (?<price>[^ ]+) USD.*$"; "\(.price)")) |
     .[]' | #elke file omzetten naar een lijst van 5 prijzen in USD
     tr -d ',' | #komma's verwijderen
-    tr '.' ',' | #punten omzetten in komma's (Europees formaat voor csv-bestand)
-    tr '\n' ';' | #newlines omzetten in puntkomma's
-    sed "s/^/$DATETIME;/" \
+    tr '\n' ',' | #newlines omzetten in puntkomma's
+    sed "s/^/$DATETIME,/" |
+    sed "s/,$/\n/" \
     >> $BASE_DIR/out.csv #csv-lijn voor huidig bestand achteraan het outputbestand toevoegen
 done
 
