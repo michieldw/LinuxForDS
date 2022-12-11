@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # data inladen
-data = np.loadtxt('out.csv', delimiter=',', skiprows=1,
+data = np.loadtxt('./out/data_filtered.csv', delimiter=',', skiprows=1,
                   dtype={'names': ('date', 'BNB', 'BTC', 'ETH', 'USDC', 'USDT'),
                          'formats': ('S15', 'f4', 'f4', 'f4', 'f4', 'f4')})
 
@@ -25,10 +25,10 @@ for col_name in ['BNB', 'BTC', 'ETH', 'USDC', 'USDT']:
     plt.xlabel('Time')
     plt.ylabel(f"{col_name} in USD")
     plt.title(f"Price of {col_name} over time")
-    plt.savefig(f"{col_name}.png")
+    plt.savefig(f"./out/{col_name}.png")
     plt.clf()
 
-with open('./data.txt', 'r+') as file:
+with open('./out/data.txt', 'r+') as file:
     file.seek(0)
     file.truncate()
     for currency,stats in d.items():
